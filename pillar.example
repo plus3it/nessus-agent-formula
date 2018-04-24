@@ -1,0 +1,39 @@
+mcafee-agent:
+
+  lookup:
+
+    #############################################################
+    #
+    # OPTIONAL Windows parameters for the nessus-agent-formula
+    #
+    #############################################################
+
+    # `package` is the name of the package definition for the
+    # nessus agent.
+    #package: nessus-agent
+
+    # `version` is the version of the agent to install. the version
+    # must be available in the package repository.
+    #version: ''
+
+
+    #############################################################
+    #
+    # REQUIRED Linux parameters for the nessus-agent-formula
+    # Uncomment and set all required parameters or the formula
+    # will fail
+    #############################################################
+
+    # URL to the install shell archive
+    #source: https://S3BUCKET.F.Q.D.N/mcafee/linux/mcafee-agent/dev/install.sh
+
+    # URL to the hash of the shell archive
+    #source_hash: https://S3BUCKET.F.Q.D.N/mcafee/linux/mcafee-agent/dev/install.sh.SHA512
+
+    #############################################################
+    #
+    # OPTIONAL Linux parameters for the nessus-agent-formula
+    #
+    #############################################################
+
+    

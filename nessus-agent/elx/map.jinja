@@ -1,0 +1,25 @@
+{#- Initialize a map of default values #}
+{%- load_yaml as defaults %}
+
+client_in_ports:
+  - 8591
+keystore_directory: /opt/McAfee/cma/scratch/keystore
+key_files:
+  - agentprvkey.bin
+  - agentpubkey.bin
+  - serverpubkey.bin
+  - serverreqseckey.bin
+rpms:
+  - MFEcma
+  - MFErt
+
+{%- endload %}
+
+{#- Define the mcafee map, merging pillar and default values #}
+{%-
+    set nessus = salt['pillar.get'](
+        'nessus-agent:lookup',
+        default=defaults,
+        merge=True
+    )
+%}

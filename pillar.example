@@ -1,4 +1,4 @@
-mcafee-agent:
+nessus-agent:
 
   lookup:
 
@@ -24,11 +24,11 @@ mcafee-agent:
     # will fail
     #############################################################
 
-    # URL to the install shell archive
-    #source: https://S3BUCKET.F.Q.D.N/mcafee/linux/mcafee-agent/dev/install.sh
+    # URL to the EL6 rpm source file
+    #package_url_es6: https://S3BUCKET.F.Q.D.N/nessus-agent/NessusAgent-<version>-es6.x86_64.rpm
 
-    # URL to the hash of the shell archive
-    #source_hash: https://S3BUCKET.F.Q.D.N/mcafee/linux/mcafee-agent/dev/install.sh.SHA512
+    # URL to the EL7 rpm source file
+    #package_url_es7: https://S3BUCKET.F.Q.D.N/nessus-agent/NessusAgent-<version>-es7.x86_64.rpm
 
     #############################################################
     #
@@ -36,4 +36,14 @@ mcafee-agent:
     #
     #############################################################
 
-    
+    # Nessus server FQDN
+    #nessus_server: 'nessus.server.com'
+
+    # Nessus server key
+    #nessus_key: '0000111122223333444455556666777788889999aaaabbbbccccddddeeeeffff'
+
+    # Nessus server port number
+    #nessus_port: '8843'
+
+    # Nessus group name
+    #nessus_groups: 'NessusAgents'

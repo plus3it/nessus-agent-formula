@@ -1,0 +1,49 @@
+nessus-agent:
+
+  lookup:
+
+    #############################################################
+    #
+    # OPTIONAL Windows parameters for the nessus-agent-formula
+    #
+    #############################################################
+
+    # `package` is the name of the package definition for the
+    # nessus agent.
+    #package: nessus-agent
+
+    # `version` is the version of the agent to install. the version
+    # must be available in the package repository.
+    #version: ''
+
+
+    #############################################################
+    #
+    # REQUIRED Linux parameters for the nessus-agent-formula
+    # Uncomment and set all required parameters or the formula
+    # will fail
+    #############################################################
+
+    # URL to the EL6 rpm source file
+    #package_url_es6: https://S3BUCKET.F.Q.D.N/nessus-agent/NessusAgent-<version>-es6.x86_64.rpm
+
+    # URL to the EL7 rpm source file
+    #package_url_es7: https://S3BUCKET.F.Q.D.N/nessus-agent/NessusAgent-<version>-es7.x86_64.rpm
+
+    #############################################################
+    #
+    # OPTIONAL Linux parameters for the nessus-agent-formula
+    #
+    #############################################################
+
+    # Nessus server FQDN
+    #nessus_server: 'nessus.server.com'
+
+    # Nessus server key
+    #nessus_key: '0000111122223333444455556666777788889999aaaabbbbccccddddeeeeffff'
+
+    # Nessus server port number
+    #nessus_port: '8843'
+
+    # Nessus group name
+    #nessus_groups: 'NessusAgents'

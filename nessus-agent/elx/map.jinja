@@ -1,0 +1,20 @@
+{#- Initialize a map of default values #}
+{%- load_yaml as defaults %}
+
+package: NessusAgent
+sbin_file: /opt/nessus_agent/sbin/nessuscli
+nessus_server: ''
+nessus_key: ''
+nessus_port: ''
+nessus_groups: ''
+
+{%- endload %}
+
+{#- Define the nessus map, merging pillar and default values #}
+{%-
+    set nessus = salt['pillar.get'](
+        'nessus-agent:lookup',
+        default=defaults,
+        merge=True
+    )
+%}

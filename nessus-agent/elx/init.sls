@@ -30,6 +30,75 @@ Print nessus-agent help:
         without linking the agent to the server.
 {%- endif %}
 
+{%- if (nessus.log_rotation_strategy) %}
+Add Log Rotation Strategy:
+  file.replace:
+    - name: '/opt/nessus_agent/var/nessus/log.json'
+    - pattern: '"file": "/opt/nessus_agent/var/nessus/logs/www_server.log"'
+    - repl: '"rotation_strategy": {{nessus.log_rotation_strategy}},\n\t\t\g<0>'
+    - watch:
+      - cmd: Pause For Log File
+{%- endif %}
+
+{%- if (nessus.log_rotation_time) %}
+Add Log Rotation Time:
+  file.replace:
+    - name: '/opt/nessus_agent/var/nessus/log.json'
+    - pattern: '"file": "/opt/nessus_agent/var/nessus/logs/www_server.log"'
+    - repl: '"rotation_time": {{nessus.log_rotation_time}},\n\t\t\g<0>'
+    - watch:
+      - cmd: Pause For Log File
+{%- endif %}
+
+{%- if (nessus.log_max_size) %}
+Add Log Max Size:
+  file.replace:
+    - name: '/opt/nessus_agent/var/nessus/log.json'
+    - pattern: '"file": "/opt/nessus_agent/var/nessus/logs/www_server.log"'
+    - repl: '"max_size": {{nessus.log_max_size}},\n\t\t\g<0>'
+    - watch:
+      - cmd: Pause For Log File
+{%- endif %}
+
+{%- if (nessus.log_max_files) %}
+Add Log Max Files:
+  file.replace:
+    - name: '/opt/nessus_agent/var/nessus/log.json'
+    - pattern: '"file": "/opt/nessus_agent/var/nessus/logs/www_server.log"'
+    - repl: '"max_files": {{nessus.log_max_files}},\n\t\t\g<0>'
+    - watch:
+      - cmd: Pause For Log File
+{%- endif %}
+
+Pause For Log File:
+  cmd.run:
+    - name: sleep 5
+    - watch:
+      - cmd: Start Nessus Agent
+
+Pre-Create Nessus Log Directory:
+  file.directory:
+    - name: /var/log/nessus/logs
+    - user: root
+    - group: root
+    - dir_mode: 0755
+    - recurse:
+      - user
+      - group
+      - mode
+    - makedirs: True
+
+Create Sym-link To Log Dir:
+  file.symlink:
+    - name: /opt/nessus_agent/var/nessus/logs
+    - target: /var/log/nessus/logs
+    - user: root
+    - group: root
+    - mode: 0755
+    - makedirs: True
+    - require:
+      - file: Pre-Create Nessus Log Directory
+
 Start Nessus Agent:
   cmd.run:
     - name: /sbin/service nessusagent start
@@ -44,3 +113,5 @@ Install Nessus Package:
 {%- elif salt.grains.get('osmajorrelease') == '6'%}
       - {{ nessus.package }}: {{ nessus.package_url_es6 }}
 {%- endif %}
+    - require:
+      - file: Create Sym-link To Log Dir

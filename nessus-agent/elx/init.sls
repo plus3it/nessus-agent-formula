@@ -30,42 +30,42 @@ Print nessus-agent help:
         without linking the agent to the server.
 {%- endif %}
 
-{%- if (nessus.log_rotation_strategy) %}
+{%- if nessus.log_rotation_strategy %}
 Add Log Rotation Strategy:
   file.replace:
-    - name: '/opt/nessus_agent/var/nessus/log.json'
+    - name: /opt/nessus_agent/var/nessus/log.json
     - pattern: '"file": "/opt/nessus_agent/var/nessus/logs/www_server.log"'
-    - repl: '"rotation_strategy": {{nessus.log_rotation_strategy}},\n\t\t\g<0>'
+    - repl: '"rotation_strategy": "{{nessus.log_rotation_strategy}}",\n                \g<0>'
     - watch:
       - cmd: Pause For Log File
 {%- endif %}
 
-{%- if (nessus.log_rotation_time) %}
+{%- if nessus.log_rotation_time %}
 Add Log Rotation Time:
   file.replace:
-    - name: '/opt/nessus_agent/var/nessus/log.json'
+    - name: /opt/nessus_agent/var/nessus/log.json
     - pattern: '"file": "/opt/nessus_agent/var/nessus/logs/www_server.log"'
-    - repl: '"rotation_time": {{nessus.log_rotation_time}},\n\t\t\g<0>'
+    - repl: '"rotation_time": "{{nessus.log_rotation_time}}",\n                \g<0>'
     - watch:
       - cmd: Pause For Log File
 {%- endif %}
 
-{%- if (nessus.log_max_size) %}
+{%- if nessus.log_max_size %}
 Add Log Max Size:
   file.replace:
-    - name: '/opt/nessus_agent/var/nessus/log.json'
+    - name: /opt/nessus_agent/var/nessus/log.json
     - pattern: '"file": "/opt/nessus_agent/var/nessus/logs/www_server.log"'
-    - repl: '"max_size": {{nessus.log_max_size}},\n\t\t\g<0>'
+    - repl: '"max_size": "{{nessus.log_max_size}}",\n                \g<0>'
     - watch:
       - cmd: Pause For Log File
 {%- endif %}
 
-{%- if (nessus.log_max_files) %}
+{%- if nessus.log_max_files %}
 Add Log Max Files:
   file.replace:
-    - name: '/opt/nessus_agent/var/nessus/log.json'
+    - name: /opt/nessus_agent/var/nessus/log.json
     - pattern: '"file": "/opt/nessus_agent/var/nessus/logs/www_server.log"'
-    - repl: '"max_files": {{nessus.log_max_files}},\n\t\t\g<0>'
+    - repl: '"max_files": "{{nessus.log_max_files}}",\n                \g<0>'
     - watch:
       - cmd: Pause For Log File
 {%- endif %}

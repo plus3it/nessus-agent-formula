@@ -30,45 +30,17 @@ Print nessus-agent help:
         without linking the agent to the server.
 {%- endif %}
 
-{%- if nessus.log_rotation_strategy %}
-Add Log Rotation Strategy:
+{%- for log_file,log_rotation in nessus.log_config.items() %}
+  {%- for rotation_param,rotation_value in log_rotation.items() %}
+Add Log Config {{ log_file }} {{ rotation_param }}:
   file.replace:
     - name: /opt/nessus_agent/var/nessus/log.json
-    - pattern: '"file": "/opt/nessus_agent/var/nessus/logs/www_server.log"'
-    - repl: '"rotation_strategy": "{{nessus.log_rotation_strategy}}",\n                \g<0>'
+    - pattern: '"file": "{{ log_file }}"'
+    - repl: '"{{ rotation_param }}": "{{ rotation_value }}",\n                \g<0>'
     - watch:
       - cmd: Pause For Log File
-{%- endif %}
-
-{%- if nessus.log_rotation_time %}
-Add Log Rotation Time:
-  file.replace:
-    - name: /opt/nessus_agent/var/nessus/log.json
-    - pattern: '"file": "/opt/nessus_agent/var/nessus/logs/www_server.log"'
-    - repl: '"rotation_time": "{{nessus.log_rotation_time}}",\n                \g<0>'
-    - watch:
-      - cmd: Pause For Log File
-{%- endif %}
-
-{%- if nessus.log_max_size %}
-Add Log Max Size:
-  file.replace:
-    - name: /opt/nessus_agent/var/nessus/log.json
-    - pattern: '"file": "/opt/nessus_agent/var/nessus/logs/www_server.log"'
-    - repl: '"max_size": "{{nessus.log_max_size}}",\n                \g<0>'
-    - watch:
-      - cmd: Pause For Log File
-{%- endif %}
-
-{%- if nessus.log_max_files %}
-Add Log Max Files:
-  file.replace:
-    - name: /opt/nessus_agent/var/nessus/log.json
-    - pattern: '"file": "/opt/nessus_agent/var/nessus/logs/www_server.log"'
-    - repl: '"max_files": "{{nessus.log_max_files}}",\n                \g<0>'
-    - watch:
-      - cmd: Pause For Log File
-{%- endif %}
+  {%- endfor %}
+{%- endfor %}
 
 Pause For Log File:
   cmd.run:

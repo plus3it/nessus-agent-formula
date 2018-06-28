@@ -161,83 +161,100 @@ nessus-agent:
 
 ## Logging Configuration
 
-Common to both Windows and Linux are the parameters to configure the logging
-rotation and size.  To apply these settings, add them to the `nessus-agent:lookup`
-pillar dictionary.  These parameters are _optional_ and are not required to be
-configured in the pillar dictionary.
+There is an option to configure a custom log retention policy for each log file that
+is available within the Nessus Agent.  The `log.json` file contains definitions for
+the reporters which define the log files and logging formats.
 
-The rotation and size of the logging system can be controlled by setting the following
-parameters:
+The `log.json` is located in the following directories:
 
--   [Rotation Strategy](#nessus-agentlookuplog_rotation_strategy)
--   [Rotation Time](#nessus-agentlookuplog_rotation_time)
--   [Max Size](#nessus-agentlookuplog_max_size)
--   [Max Files](#nessus-agentlookuplog_max_files)
+Linux:  `/opt/nessus_agent/var/nessus/log.json`
 
-For more information, please refer to vendor documentation:
+Windows:  `C:\ProgramData\Tenable\Nessus Agent\nessus\log.json`
+
+Changing the default log retention policy can be done by modifying the `log.json`
+file and adding the following parameters to each reporter definition:
+
+-   Rotation Strategy
+-   Rotation Time
+-   Max Size
+-   Max Files
+
+The logging configuration is _optional_ and is not required as part of the Nessus Agent
+installation.
+
+For more information, please refer to the vendor documentation:
 
 [How to Manage Nessus log size and rotation](https://community.tenable.com/s/article/How-to-manage-Nessus-log-size-and-rotation)
 
-### `nessus-agent:lookup:log_rotation_strategy`
-
-The `log_rotation_strategy` parameter can be set to `daily` or `size`.
-
-**Required**: `False`
->
->**Default**: ``
-
-**Example**:
+To configure a custom log retention policy, the parameters must be added to the
+`nessus-agent:lookup` pillar definition in the following structure:
 
 ```yaml
 nessus-agent:
   lookup:
-    log_rotation_strategy: 'daily'
+    log_config:
+      <file-path-to-log-file>:
+        rotation_strategy: ''
+        rotation_size: ''
+        max_size: ''
+        max_files: ''
 ```
 
-### `nessus-agent:lookup:log_rotation_time`
+### `nessus-agent:lookup:log_config`
 
-The `log_rotation_time` parameter is the rotation time in `seconds`.  Used when `log_rotation_strategy` is set to `"daily"`.
+`log_config` is the main heading that begins the logging configuration.
 
-**Required**: `False`
->
->**Default**: ``
+### `nessus-agent:lookup:log_config:<file-path-to-log-file>`
 
-**Example**:
+`<file-path-to-log-file>` identifies the log file path that is present in the
+`log.json` reporter definitions.
+
+Add additional `<file-path-to-log-file>` sections to the pillar, if desired, for
+other reporters present within `log.json`.
+
+A reporter containing the log file path must be present in `log.json` or
+the logging configurations will not be added.  Adding additional reporters to
+`log.json` is outside the scope of the Nessus Agent Salt formula.
+
+### `nessus-agent:lookup:<file-path-to-log-file>:rotation_strategy`
+
+The `rotation_strategy` parameter can be set to `daily` or `size`.
+
+### `nessus-agent:lookup:<file-path-to-log-file>:rotation_time`
+
+The `rotation_time` parameter is the rotation time in `seconds`.  Used when
+`rotation_strategy` is set to `daily`.
+
+### `nessus-agent:lookup:<file-path-to-log-file>:max_size`
+
+The `max_size` parameter is the rotation size in `bytes`.  Used when
+`rotation_strategy` is set to `size`.
+
+### `nessus-agent:lookup:<file-path-to-log-file>:max_files`
+
+The `max_files` parameter is the maximum number of files retained in the file
+rotation.  Used whether `rotation_strategy` is set to `daily` or `size`.
+
+### **Example (Linux)**:
 
 ```yaml
 nessus-agent:
   lookup:
-    log_rotation_time: '86400'
+    log_config:
+      /opt/nessus_agent/var/nessus/logs/www_server.log:
+        rotation_strategy: 'size'
+        max_size: '268435456'
+        max_files: '512'
 ```
 
-### `nessus-agent:lookup:log_max_size`
-
-The `log_max_size` parameter is the rotation size in `bytes`.  Used when `log_rotation_strategy` is set to `"size"`.
-
-**Required**: `False`
->
->**Default**: ``
-
-**Example**:
+### **Example (Windows)**:
 
 ```yaml
 nessus-agent:
   lookup:
-    log_max_size: '134217728'
-```
-
-### `nessus-agent:lookup:log_max_files`
-
-The `log_max_files` parameter is the maximum number of files allowed.
-
-**Required**: `False`
->
->**Default**: ``
-
-**Example**:
-
-```yaml
-nessus-agent:
-  lookup:
-    log_max_files: '256'
+    log_config:
+      c:\\\\ProgramData\\\\Tenable\\\\Nessus Agent\\\\nessus\\\\logs\\\\www_server.log:
+        rotation_strategy: 'daily'
+        rotation_time: '86400'
+        max_files: '1024'
 ```

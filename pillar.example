@@ -14,8 +14,15 @@ nessus-agent:
 
     # `version` is the version of the agent to install. the version
     # must be available in the package repository.
-    #version: ''
+    #version: '7.0.3.20013'
 
+    # `log_config` sets the logging retention configuration for the desired log
+    # file within the Nessus Agent for the. 
+    #log_config:
+    #  c:\\\\ProgramData\\\\Tenable\\\\Nessus Agent\\\\nessus\\\\logs\\\\www_server.log:
+    #    rotation_strategy: 'daily'
+    #    rotation_time: '86400'
+    #    max_files: '512'
 
     #############################################################
     #
@@ -47,3 +54,11 @@ nessus-agent:
 
     # Nessus group name
     #nessus_groups: 'NessusAgents'
+
+    # `log_config` sets the logging retention configuration for the desired log
+    # file within the Nessus Agent for the.
+    #log_config:
+    #  /opt/nessus_agent/var/nessus/logs/www_server.log:
+    #    rotation_strategy: 'size'
+    #    max_size: '268435456'
+    #    max_files: '512'

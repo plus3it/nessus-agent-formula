@@ -6,45 +6,17 @@
 # In addiont, the sls file requires that the salt winrepo has been
 # configured with a `nessus agent` pkg definition
 
-{%- if nessus.log_rotation_strategy %}
-Add Log Rotation Strategy:
+{%- for log_file,log_rotation in nessus.log_config.items() %}
+  {%- for rotation_param,rotation_value in log_rotation.items() %}
+Add Log Config {{ log_file }} {{ rotation_param }}:
   file.replace:
     - name: C:\ProgramData\Tenable\Nessus Agent\nessus\log.json
-    - pattern: '"file": "c:\\\\ProgramData\\\\Tenable\\\\Nessus Agent\\\\nessus\\\\logs\\\\www_server.log"'
-    - repl: '"rotation_strategy": "{{nessus.log_rotation_strategy}}",\n                \g<0>'
+    - pattern: '"file": "{{ log_file }}"'
+    - repl: '"{{ rotation_param }}": "{{ rotation_value }}",\n                \g<0>'
     - watch:
       - pkg: install-nessus-agent
-{%- endif %}
-
-{%- if nessus.log_rotation_time %}
-Add Log Rotation Time:
-  file.replace:
-    - name: C:\ProgramData\Tenable\Nessus Agent\nessus\log.json
-    - pattern: '"file": "c:\\\\ProgramData\\\\Tenable\\\\Nessus Agent\\\\nessus\\\\logs\\\\www_server.log"'
-    - repl: '"rotation_time": "{{nessus.log_rotation_time}}",\n                \g<0>'
-    - watch:
-      - pkg: install-nessus-agent
-{%- endif %}
-
-{%- if nessus.log_max_size %}
-Add Log Max Size:
-  file.replace:
-    - name: C:\ProgramData\Tenable\Nessus Agent\nessus\log.json
-    - pattern: '"file": "c:\\\\ProgramData\\\\Tenable\\\\Nessus Agent\\\\nessus\\\\logs\\\\www_server.log"'
-    - repl: '"max_size": "{{nessus.log_max_size}}",\n                \g<0>'
-    - watch:
-      - pkg: install-nessus-agent
-{%- endif %}
-
-{%- if nessus.log_max_files %}
-Add Log Max Files:
-  file.replace:
-    - name: C:\ProgramData\Tenable\Nessus Agent\nessus\log.json
-    - pattern: '"file": "c:\\\\ProgramData\\\\Tenable\\\\Nessus Agent\\\\nessus\\\\logs\\\\www_server.log"'
-    - repl: '"max_files": "{{nessus.log_max_files}}",\n                \g<0>'
-    - watch:
-      - pkg: install-nessus-agent
-{%- endif %}
+  {%- endfor %}
+{%- endfor %}
 
 install-nessus-agent:
   pkg.installed:

@@ -63,25 +63,9 @@ to the Nessus Agent rpm. There are additional parameters described below,
 that are needed to link the agent to a central Nessus management server.
 All settings must be located within the `nessus-agent:lookup` pillar dictionary.
 
-### `nessus-agent:lookup:package_url_es6`
+### `nessus-agent:lookup:package_url`
 
-The `package_url_es6` parameter is the URL to a EL6 Nessus Agent rpm.
-
->**Required**: `True`
->
->**Default**: `None`
-
-**Example**:
-
-```yaml
-nessus-agent:
-  lookup:
-    package_url_es6: https://S3BUCKET.F.Q.D.N/nessus-agent/NessusAgent-7.0.3-es6.x86_64.rpm
-```
-
-### `nessus-agent:lookup:package_url_es7`
-
-The `package_url_es7` parameter is the URL to a EL7 Nessus Agent rpm.
+The `package_url` parameter is the URL to the Nessus Agent rpm.
 
 >**Required**: `True`
 >
@@ -92,7 +76,7 @@ The `package_url_es7` parameter is the URL to a EL7 Nessus Agent rpm.
 ```yaml
 nessus-agent:
   lookup:
-    package_url_es7: https://S3BUCKET.F.Q.D.N/nessus-agent/NessusAgent-7.0.3-es7.x86_64.rpm
+    package_url: https://S3BUCKET.F.Q.D.N/nessus-agent/NessusAgent-7.0.3-es7.x86_64.rpm
 ```
 
 ### `nessus-agent:lookup:nessus_server`

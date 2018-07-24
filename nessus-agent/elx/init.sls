@@ -80,10 +80,6 @@ Start Nessus Agent:
 Install Nessus Package:
   pkg.installed:
     - sources:
-{%- if salt.grains.get('osmajorrelease') == '7'%}
-      - {{ nessus.package }}: {{ nessus.package_url_es7 }}
-{%- elif salt.grains.get('osmajorrelease') == '6'%}
-      - {{ nessus.package }}: {{ nessus.package_url_es6 }}
-{%- endif %}
+      - {{ nessus.package }}: {{ nessus.package_url }}
     - require:
       - file: Create Sym-link To Log Dir

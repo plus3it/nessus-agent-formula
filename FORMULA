@@ -1,6 +1,6 @@
 name: nessus-agent
 os: RedHat, CentOS, Windows
 os_family: RedHat, Windows
-version: 0.0.1
+version: 0.1.0
 summary: Nessus Agent
 description: Nessus Agent

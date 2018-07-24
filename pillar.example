@@ -17,7 +17,7 @@ nessus-agent:
     #version: '7.0.3.20013'
 
     # `log_config` sets the logging retention configuration for the desired log
-    # file within the Nessus Agent for the. 
+    # file within the Nessus Agent for the.
     #log_config:
     #  c:\\\\ProgramData\\\\Tenable\\\\Nessus Agent\\\\nessus\\\\logs\\\\www_server.log:
     #    rotation_strategy: 'daily'
@@ -31,11 +31,8 @@ nessus-agent:
     # will fail
     #############################################################
 
-    # URL to the EL6 rpm source file
-    #package_url_es6: https://S3BUCKET.F.Q.D.N/nessus-agent/NessusAgent-<version>-es6.x86_64.rpm
-
-    # URL to the EL7 rpm source file
-    #package_url_es7: https://S3BUCKET.F.Q.D.N/nessus-agent/NessusAgent-<version>-es7.x86_64.rpm
+    # URL to the rpm source file
+    #package_url: https://S3BUCKET.F.Q.D.N/nessus-agent/NessusAgent-<version>.x86_64.rpm
 
     #############################################################
     #

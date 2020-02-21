@@ -83,3 +83,4 @@ Install Nessus Package:
       - {{ nessus.package }}: {{ nessus.package_url }}
     - require:
       - file: Create Sym-link To Log Dir
+    - skip_verify: True

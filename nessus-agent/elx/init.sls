@@ -72,8 +72,9 @@ Create Sym-link To Log Dir:
       - file: Pre-Create Nessus Log Directory
 
 Start Nessus Agent:
-  cmd.run:
-    - name: /sbin/service nessusagent start
+  service.running:
+    - name: {{ service_name }}
+    - enable: True
     - require:
       - pkg: Install Nessus Package
 

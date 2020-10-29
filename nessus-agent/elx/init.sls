@@ -46,7 +46,7 @@ Pause For Log File:
   cmd.run:
     - name: sleep 5
     - watch:
-      - cmd: Start Nessus Agent
+      - service: Start Nessus Agent
 
 Pre-Create Nessus Log Directory:
   file.directory:
@@ -72,8 +72,9 @@ Create Sym-link To Log Dir:
       - file: Pre-Create Nessus Log Directory
 
 Start Nessus Agent:
-  cmd.run:
-    - name: /sbin/service nessusagent start
+  service.running:
+    - name: {{ nessus.package | lower }}
+    - enable: True
     - require:
       - pkg: Install Nessus Package
 

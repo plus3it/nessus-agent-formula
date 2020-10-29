@@ -46,7 +46,7 @@ Pause For Log File:
   cmd.run:
     - name: sleep 5
     - watch:
-      - cmd: Start Nessus Agent
+      - service: Start Nessus Agent
 
 Pre-Create Nessus Log Directory:
   file.directory:

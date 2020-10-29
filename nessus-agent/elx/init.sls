@@ -73,7 +73,7 @@ Create Sym-link To Log Dir:
 
 Start Nessus Agent:
   service.running:
-    - name: {{ nessus.package }}
+    - name: {{ nessus.package | lower }}
     - enable: True
     - require:
       - pkg: Install Nessus Package

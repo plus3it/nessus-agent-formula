@@ -4,14 +4,11 @@ env:
   global:
     - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
     - SEGFAULT_SIGNALS=all
-    - SALT_PILLARROOT=$TRAVIS_BUILD_DIR/tests/pillar/test-linux-main
+    - SALT_PILLARROOT=$TRAVIS_BUILD_DIR/tests/pillar/test-nessus-agent
     - SALT_REPO_URL=https://archive.repo.saltstack.com/yum/redhat/7/x86_64/2019.2.repo
   matrix:
-    - OS_VERSION=7 SALT_STATE=ash-linux.stig
-    - OS_VERSION=7 SALT_STATE=ash-linux.iavm
-    - OS_VERSION=7 SALT_STATE=ash-linux.scap
-    - OS_VERSION=7 SALT_STATE=ash-linux.vendor
-    - OS_VERSION=7 SALT_STATE=ash-linux.el7.stig
+    - OS_VERSION=7 SALT_STATE=nessus-agent
+    - OS_VERSION=7 SALT_STATE=nessus-agent.elx
 
 services:
   - docker

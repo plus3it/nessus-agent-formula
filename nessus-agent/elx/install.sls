@@ -26,7 +26,7 @@ Create Sym-link To Log Dir:
     - target: /var/log/nessus/logs
     - user: root
     - group: root
-    - mode: 0755
+    - mode: '0755'
     - makedirs: True
     - require:
       - file: Pre-Create Nessus Log Directory
@@ -57,7 +57,7 @@ Pre-Create Nessus Log Directory:
     - name: /var/log/nessus/logs
     - user: root
     - group: root
-    - dir_mode: 0755
+    - dir_mode: '0755'
     - recurse:
       - user
       - group

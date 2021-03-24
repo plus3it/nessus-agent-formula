@@ -10,7 +10,8 @@
 {%- set staleDbs = salt.file.find('/opt/nessus_agent/var/nessus/', maxdepth='1', type='f', name='*.db') %}
 
 {%- if (nessus.nessus_key and nessus.nessus_server and nessus.nessus_port and nessus.nessus_groups) %}
-  {%- set linkStr = nessus.sbin_file ~ 'agent link --key=' ~ nessus.nessus_key ~ ' --host=' ~ nessus.nessus_server ~ ' --port=' ~ nessus.nessus_port ~ ' --groups=' ~ nessus.nessus_groups %}
+  {%- set linkStr = nessus.sbin_file ~ 'agent link --key=' ~ nessus.nessus_key ~ ' --host=' ~ nessus.nessus_server ~ ' --port=' ~ nessus.nessus_port ~
+                    ' --groups=' ~ nessus.nessus_groups %}
   {%- if salt.file.file_exists(chkFile) %}
 Unlink Stale Agent-config:
   cmd.run:

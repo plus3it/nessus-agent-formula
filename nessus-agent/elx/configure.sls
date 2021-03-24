@@ -23,32 +23,21 @@ Stop Nessus Agent:
     - name: {{ nessus.package | lower }}
     - require:
       - cmd: Unlink Stale Agent-config
-    {%- for staleDb in staleDbs %}
 
+    {%- for staleDb in staleDbs %}
 Nuke Stale {{ staleDb }} file:
   file.absent:
     - name: '{{ staleDb }}'
     - require:
       - Stop Nessus Agent
+    - require_in:
+      - Configure Nessus Agent
     {%- endfor %}
-
-sleep:
-  module.run:
-    - name: test.sleep
-    - length: 30
-    - require:
-      - service: Stop Nessus Agent
-
-Handle {{ chkFile }} file:
-  file.absent:
-    - name: '{{ chkFile }}'
-    - require:
-      - module: sleep
-  {%- else %}
-Handle {{ chkFile }} file:
-  file.absent:
-    - name: '{{ chkFile }}'
   {%- endif %}
+
+Handle {{ chkFile }} file:
+  file.absent:
+    - name: '{{ chkFile }}'
 
 Configure Nessus Agent:
   cmd.run:

@@ -16,7 +16,7 @@ Add Log Config {{ log_file }} {{ rotation_param }}:
     - pattern: '"file": "{{ log_file }}"'
     - repl: '"{{ rotation_param }}": "{{ rotation_value }}",\n                \g<0>'
     - watch:
-      - cmd: Pause For Log File
+      - pkg: Install Nessus Package
   {%- endfor %}
 {%- endfor %}
 
@@ -31,13 +31,6 @@ Create Sym-link To Log Dir:
     - require:
       - file: Pre-Create Nessus Log Directory
 
-Enable Nessus Agent:
-  service.dead:
-    - name: {{ nessus.package | lower }}
-    - enable: True
-    - require:
-      - pkg: Install Nessus Package
-
 Install Nessus Package:
   pkg.installed:
     - sources:
@@ -45,12 +38,6 @@ Install Nessus Package:
     - require:
       - file: Create Sym-link To Log Dir
     - skip_verify: True
-
-Pause For Log File:
-  cmd.run:
-    - name: sleep 5
-    - watch:
-      - service: Enable Nessus Agent
 
 Pre-Create Nessus Log Directory:
   file.directory:

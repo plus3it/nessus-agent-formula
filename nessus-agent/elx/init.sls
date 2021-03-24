@@ -8,5 +8,6 @@
 #################################################################
 {%- from tpldir ~ '/map.jinja' import nessus with context %}
 
-include: nessus-agent.elx.install
-include: nessus-agent.elx.configure
+include:
+  - nessus-agent.elx.install
+  - nessus-agent.elx.configure

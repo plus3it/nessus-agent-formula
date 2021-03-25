@@ -1,10 +1,11 @@
-# This salt state installs the Nessus Agent using the provided
-# URL to the rpm source file.  Once installed, the agent will be
-# configured and linked to the Nessus server using the provided
-# parameters (Nessus 64 hexadecimal-digit key, Nessus server FQDN and
-# port, Nessus Agent Group Name).  The final step is to start tHe
-# Nessus Agent service.
-#################################################################
+# This salt state configures a previously-installed Nessus Agent -
+# whether baked-in or installed by the 'install' component of this
+# formula. The agent will be configured and linked to the Nessus server
+# using the provided parameters (Nessus 64 hexadecimal-digit key,
+# Nessus server FQDN and port, Nessus Agent Group Name). The final step
+# is to start the Nessus Agent service.
+#
+###########################################################################
 {%- from tpldir ~ '/map.jinja' import nessus with context %}
 {%- set chkFile = '/etc/tenable_tag' %}
 {%- set staleDbs = salt.file.find('/opt/nessus_agent/var/nessus/', maxdepth='1', type='f', name='*.db') %}

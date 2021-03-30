@@ -17,7 +17,7 @@
         ' --groups=' ~ nessus.nessus_groups
 %}
 
-{%- if salt.file.file_exists(chkFile) %}
+{%- if staleDbs %}
 Unlink Stale Agent-config:
   cmd.run:
     - name: '{{ nessus.sbin_file }} agent unlink'

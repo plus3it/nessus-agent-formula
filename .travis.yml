@@ -9,6 +9,7 @@ env:
   matrix:
     - OS_VERSION=7 SALT_STATE=nessus-agent
     - OS_VERSION=7 SALT_STATE=nessus-agent.elx
+    - OS_VERSION=7 SALT_STATE=nessus-agent.elx.configure
 
 services:
   - docker

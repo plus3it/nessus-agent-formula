@@ -24,7 +24,6 @@ Unlink Stale Agent-config:
     - success_retcodes:
       - 0
       - 2
-    - unless: {{ linkStr }}
 
 Stop Nessus Agent:
   service.dead:

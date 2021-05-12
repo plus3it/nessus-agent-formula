@@ -1,5 +1,5 @@
 language: python
-sudo: required
+
 env:
   global:
     - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
@@ -8,8 +8,6 @@ env:
     - SALT_REPO_URL=https://repo.saltproject.io/py3/redhat/7/x86_64/3003.repo
   matrix:
     - OS_VERSION=7 SALT_STATE=nessus-agent
-    - OS_VERSION=7 SALT_STATE=nessus-agent.elx
-    - OS_VERSION=7 SALT_STATE=nessus-agent.elx.configure
 
 services:
   - docker
@@ -41,13 +39,13 @@ install:
 
 script:
   - sudo docker exec centos-${OS_VERSION} salt-call --local
-      --retcode-passthrough --log-file-level debug
+      --retcode-passthrough --log-file /var/log/salt/minion --log-file-level debug
       --file-root=$TRAVIS_BUILD_DIR
       --pillar-root=$SALT_PILLARROOT
       state.show_sls
-      $SALT_STATE
-  - sudo docker exec centos-${OS_VERSION} salt-call --local
-      --retcode-passthrough --log-file-level debug
+      $SALT_STATE &&
+    sudo docker exec centos-${OS_VERSION} salt-call --local
+      --retcode-passthrough --log-file /var/log/salt/minion --log-file-level debug
       --file-root=$TRAVIS_BUILD_DIR
       --pillar-root=$SALT_PILLARROOT
       state.sls
@@ -57,7 +55,7 @@ script:
 after_failure:
   - sudo docker exec centos-${OS_VERSION} salt-call --local grains.items
   - sudo docker exec centos-${OS_VERSION} sh -c set
-  - sudo docker exec centos-${OS_VERSION} more /var/log/salt/* | cat
+  - sudo docker exec centos-${OS_VERSION} cat /var/log/salt/minion
 
 after_script:
   - sudo docker stop centos-${OS_VERSION}

@@ -8,7 +8,7 @@
 ###########################################################################
 {%- from tpldir ~ '/map.jinja' import nessus with context %}
 {%- set chkFile = '/etc/tenable_tag' %}
-{%- set staleDbs = salt.file.find('/opt/nessus_agent/var/nessus/', maxdepth=1, type='f', name='*.db') %}
+{%- set staleDbs = salt.file.find('/opt/nessus_agent/var/nessus/', maxdepth='1', type='f', name='*.db') %}
 {%- set linkStr =
         nessus.sbin_file ~
         ' agent link --key=' ~ nessus.nessus_key ~

@@ -36,6 +36,8 @@ install:
       --file-root=$TRAVIS_BUILD_DIR
       --pillar-root=$SALT_PILLARROOT
       saltutil.sync_all
+  # create the path the salt.file.find looks for
+  - sudo docker exec centos-${OS_VERSION} mkdir -p /opt/nessus_agent/var/nessus/
 
 script:
   - sudo docker exec centos-${OS_VERSION} salt-call --local

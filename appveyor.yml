@@ -20,7 +20,7 @@ install:
   - ps: |
       $null = `
         Start-Process -FilePath "${env:temp}\salt-minion.exe" `
-        -ArgumentList "/S" -NoNewWindow -PassThru -Wait
+        -ArgumentList @("/S", "/install-dir=c:\salt") -NoNewWindow -PassThru -Wait
   - ps: C:\salt\salt-call.bat --versions-report
 
 test_script:

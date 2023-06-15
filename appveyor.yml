@@ -1,16 +1,18 @@
 version: '{branch}-{build}'
+image: Visual Studio 2019
 build: off
 environment:
   global:
     SALT_FILEROOT: '%APPVEYOR_BUILD_FOLDER%'
     SALT_STATE: nessus-agent
-    SALT_URL: 'https://repo.saltproject.io/windows/Salt-Minion-3003-Py3-AMD64-Setup.exe'
+    SALT_URL: https://repo.saltproject.io/windows/Salt-Minion-3004.2-1-Py3-AMD64-Setup.exe
   matrix:
     - SALT_PILLARROOT: '%APPVEYOR_BUILD_FOLDER%\tests\pillar\test-windows-main'
 
 init:
   - ps: echo $env:PILLAR_HOME
 install:
+  - ps: '[Net.ServicePointManager]::SecurityProtocol = "Tls12, Tls13"'
   - ps: |
       $null = `
         (new-object net.webclient).DownloadFile(${env:SALT_URL}, `
@@ -18,7 +20,7 @@ install:
   - ps: |
       $null = `
         Start-Process -FilePath "${env:temp}\salt-minion.exe" `
-        -ArgumentList "/S" -NoNewWindow -PassThru -Wait
+        -ArgumentList @("/S", "/install-dir=c:\salt") -NoNewWindow -PassThru -Wait
   - ps: C:\salt\salt-call.bat --versions-report
 
 test_script:

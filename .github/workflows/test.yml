@@ -7,13 +7,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
+  linux:
     uses: plus3it/actions-workflows/.github/workflows/test-salt-linux.yml@b1b7bdb32125ccb05afa36909954a75b9f2ab431
     strategy:
       matrix:
         os_version:
           - 7
           - 8
+        salt_state:
+          - nessus-agent
+        salt_pillar_root:
+          - ./tests/pillar/test-nessus-agent
+    with:
+      salt-os-version: ${{ matrix.os_version }}
+      salt-state: ${{ matrix.salt_state }}
+      salt-pillar-root: ${{ matrix.salt_pillar_root }}
+
+  windows:
+    uses: plus3it/actions-workflows/.github/workflows/test-salt-windows.yml@84885d2116bdcaab046d6bf927127bb58cb74ae8
+    strategy:
+      matrix:
+        os_version:
+          - windows-2019
+          - windows-2022
         salt_state:
           - nessus-agent
         salt_pillar_root:

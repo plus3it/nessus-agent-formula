@@ -75,12 +75,13 @@ Pre-Create Nessus Temp Directory:
     - makedirs: True
 
 # Ensure that any "leftover" files Nessus may have created get cleaned up by the
-# systemd-tmpfiles service
+# systemd-tmpfiles service (service only runs daily, so the "10min" value may be
+# effectively moot
 Setup systmed tmpfiles service entry:
   file.managed:
     - name: '/etc/tmpfiles.d/nessus_agent.conf'
     - contents: |
-        d {{ real_nessus_tmp }} 0755 root root 10m
+        d {{ real_nessus_tmp }} 0755 root root 10min
     - group: root
     - mode: '0700'
     - require:

@@ -27,17 +27,41 @@ Create Sym-link To Log Dir:
     - require:
       - file: Pre-Create Nessus Log Directory
 
+Create Sym-link To Temp Dir:
+  file.symlink:
+    - name: '/opt/nessus_agent/var/nessus/tmp'
+    - target: '/var/tmp/nessus'
+    - user: root
+    - group: root
+    - mode: '0755'
+    - makedirs: True
+    - require:
+      - file: Pre-Create Nessus Temp Directory
+
 Install Nessus Package:
   pkg.installed:
     - sources:
       - {{ nessus.package }}: {{ nessus.package_url }}
     - require:
       - file: Create Sym-link To Log Dir
+      - file: Create Sym-link To Temp Dir
     - skip_verify: True
 
 Pre-Create Nessus Log Directory:
   file.directory:
     - name: /var/log/nessus/logs
+    - user: root
+    - group: root
+    - dir_mode: '0755'
+    - recurse:
+      - user
+      - group
+      - mode
+    - makedirs: True
+
+Pre-Create Nessus Temp Directory:
+  file.directory:
+    - name: '/var/tmp/nessus'
     - user: root
     - group: root
     - dir_mode: '0755'

@@ -77,8 +77,8 @@ Pre-Create Nessus Temp Directory:
 # Ensure that any "leftover" files Nessus may have created get cleaned up by the
 # systemd-tmpfiles service
 Setup systmed tmpfiles service entry:
-  file.:
-    - name /etc/tmpfiles.d/nessus_agent.conf
+  file.managed:
+    - name: '/etc/tmpfiles.d/nessus_agent.conf'
     - contents: |
         d {{ real_nessus_tmp }} 0755 root root 10m
     - group: root

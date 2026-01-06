@@ -97,5 +97,46 @@ Incormporated in the BASH block _before_ the `lvextend` operation. The multipart
 
 ### `/opt` Hosted On A Standalone Filesystem
 
+This solution is basically the same as the "`/opt` Hosted Within the `/` Filesystem" solution. However, it assumes that the `/opt` filesystem already exists as a separate filesystem and associated LVM2 volume. Substitute valuse from the `/` filesystem solution as appropriate.
+
+### Moving `/opt/nessus_agent` To Its Own filesystem
+
+This section assumes that the boot-disk has already been expanded and the parition hosting the LVM2 volume-group has been grown.
+
+While the entire `/opt` filesystem _could_ be divorced from the `/` filesystem, the `/opt` filesystem typically already has content within it. Further, that content oftent results in open file-handles that make launch-time automation more problematic to account for. To ensure that _just_ the `/opt/nessus_agent` content ends up on a dedicated partition, userData payload similar to:
+
+```
+[...ELIDED...]
+
+--===============BOUNDARY==
+MIME-Version: 1.0
+Content-Type: text/x-shellscript
+Content-Disposition: attachment; filename="01_nessusdev_setup.sh"
+#!/bin/bash
+set -euo pipefail
+#
+# UserData script to set up SSM and console-based access
+#
+#################################################################
+
+lvcreate -L <SIZE_OF_VOLUME> -n nessusVol RootVG
+mkfs -t xfs -L NessusAgent /dev/RootVG/nessusVol
+install -dDm 0700 /opt/nessus_agent
+print -f '/dev/RootVG/nessusVol\t/opt/nessus_agent\txfs\tdefaults\t1 1\n' >> /etc/fstab
+systemctl daemon-reload
+mount /dev/RootVG/nessusVol
+
+--===============BOUNDARY==--
+```
+
+Can be used. The above:
+
+1. Creates an LVM2 volume named "`nessusVol`" within the "`RootVG`" LVM2 volume-group
+1. Creates an XFS filesystem, with the "`NessusAgent`" label, on top of the "`nessusVol`" LVM2 volume
+1. Creates the mountpoint, "`/opt/nessus_agent`"
+1. Adds a suitable entry to the system's "`/etc/fstab`" file
+1. Makes `systemd` reread the "`/etc/fstab`" file to update its mount-unit definitions
+1. Mounts the XFS-formatted filesystem hosted on "`/dev/RootVG/nessusVol`" to the "`/opt/nessus_agent`" mountpoint
+
 [^1]: The userData-payload shown is _very_ simplified and not very flexible as a result. Flexibility can be achieved by using "discovery" logic to determing things like the name of LVM2 volume-group and volume-name associated with the `/` filesystem.
 

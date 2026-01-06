@@ -87,7 +87,7 @@ The above userData will
 1. Attempt to grow the disk-partition known to the system as `/dev/nvme0n1p4`.
 2. Attempt to grow the LVM2 volume-object (that lives on the `/dev/nvme0n1p4` blocke-device node)
 
-If multipart-MIME is undesirable[^2][^3], the `cloud-config` block can be removed and its logic:
+If multipart-MIME[^2] is undesirable[^3], the `cloud-config` block can be removed and its logic:
 
 ```
 growpart /dev/nvme0n1 4
@@ -139,5 +139,5 @@ Can be used. The above:
 1. Mounts the XFS-formatted filesystem hosted on "`/dev/RootVG/nessusVol`" to the "`/opt/nessus_agent`" mountpoint
 
 [^1]: The userData-payload shown is _very_ simplified and not very flexible as a result. Flexibility can be achieved by using "discovery" logic to determing things like the name of LVM2 volume-group and volume-name associated with the `/` filesystem.
-[^2]: Multipart-MIME is recommended as it allows the easy, modular setup of launch-time automation. Different automation-chunks can be logically grouped and, by the use of suitable `filename` values, execution-order can be enforced
-[^3]: It is assumed that this formula would be run via block where the `filename` value causes it to be executed after all prior blocks. For example, something like `filename=99_runwam.sh`. See the [watchmaker documentation](https://watchmaker.readthedocs.io/en/stable/usage.html#linux) for ideas on contents for the block.
+[^2]: It is assumed that this formula would be run via a block where the `filename` value causes it to be executed after all prior blocks. For example, something like `filename=99_runwam.sh`. See the [watchmaker documentation](https://watchmaker.readthedocs.io/en/stable/usage.html#linux) for ideas on contents for the block.
+[^3]: Multipart-MIME is recommended as it allows the easy, modular setup of launch-time automation. Different automation-chunks can be logically grouped and, by the use of suitable `filename` values, execution-order can be enforced

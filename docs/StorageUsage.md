@@ -87,13 +87,13 @@ The above userData will
 1. Attempt to grow the disk-partition known to the system as `/dev/nvme0n1p4`.
 2. Attempt to grow the LVM2 volume-object (that lives on the `/dev/nvme0n1p4` blocke-device node)
 
-If multipart-MIME[^2] is undesirable[^3], the `cloud-config` block can be removed and its logic:
+If multipart-MIME[^2] is undesirable[^3], the `cloud-config` block can be removed and its logic reimplemented like:
 
 ```
 growpart /dev/nvme0n1 4
 ```
 
-Incormporated in the BASH block _before_ the `lvextend` operation. The multipart-MIME is somewhat more-appropriate when pursuing a more-flexible approach to the problem.
+In the BASH block _before_ the `lvextend` operation. The multipart-MIME is somewhat more-appropriate when pursuing a more-flexible and/or modular approach to the problem.
 
 ### `/opt` Hosted On A Standalone Filesystem
 

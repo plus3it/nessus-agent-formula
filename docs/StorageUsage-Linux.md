@@ -73,7 +73,7 @@ Content-Disposition: attachment; filename="00_bootdev_setup.sh"
 #!/bin/bash
 set -euo pipefail
 #
-# UserData scriptlet to extent rootVol LVM2 volume
+# UserData scriptlet to extend rootVol LVM2 volume
 #
 #################################################################
 

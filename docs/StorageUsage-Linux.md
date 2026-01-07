@@ -4,7 +4,7 @@ Some recent (started receiving reports in late 2025) users of this formula have 
 
 Initial investigation of this issue found that what was happening was that the storage-space problem was a result of the scan process installing plugins. The initial issue was exhaustion caused by the scanner staging and then attempting to unarchive to-be-installed plugins in the `/opt/nessus_agent/var/tmp` directory. Attempts to forestall this problem via updates to this project's automation solved _that_ problem. However, it didn't solve the overarching space-exhaustion issues.
 
-Further testing showed that fixing the inital probelem caused by the `/opt/nessus_agent/var/tmp` directory filling up then resulted in the `/opt/nessus_agent/var/nessus/` directory filling up. Initially, it was assumed that this was due to the _plugins_ successful installation. However, these plugins only accounted for a further 10MiB of space-consumption (in the `/opt/nessus_agent/var/nessus//plugins` subdirectory). Once a scan started to run, it begins to generate a collection of `*.db` and `*.db-*` files (directly) within the `/opt/nessus_agent/var/nessus/` directory. On a testing-system with the `/` filesystem over-provisioned (in testing, grew the `/` filesystem by 10GiB), it was found that the _first_ successful scan of a system resulted in just shy of 1.8GiB of persistent `*.db` and `*.db-*` files being created.
+Further testing showed that fixing the initial problem caused by the `/opt/nessus_agent/var/tmp` directory filling up then resulted in the `/opt/nessus_agent/var/nessus/` directory filling up. Initially, it was assumed that this was due to the _plugins_ successful installation. However, these plugins only accounted for a further 10MiB of space-consumption (in the `/opt/nessus_agent/var/nessus//plugins` subdirectory). Once a scan started to run, it begins to generate a collection of `*.db` and `*.db-*` files (directly) within the `/opt/nessus_agent/var/nessus/` directory. On a testing-system with the `/` filesystem over-provisioned (in testing, grew the `/` filesystem by 10GiB), it was found that the _first_ successful scan of a system resulted in just shy of 1.8GiB of persistent `*.db` and `*.db-*` files being created.
 
 # Configurations Susceptible to the Problem
 
@@ -85,7 +85,7 @@ lvextend -rl +100%FREE RootVG/rootVol
 The above userData will
 
 1. Attempt to grow the disk-partition known to the system as `/dev/nvme0n1p4`.
-2. Attempt to grow the LVM2 volume-object (that lives on the `/dev/nvme0n1p4` block-device node)
+2. Attempt to grow the LVM2 volume-object (that lives on the `/dev/nvme0n1p4` block-device node).
 
 If multipart-MIME[^2] is undesirable[^3], the `cloud-config` block can be removed and its logic reimplemented like:
 
@@ -139,6 +139,6 @@ Can be used. The above:
 1. Makes `systemd` reread the "`/etc/fstab`" file to update its mount-unit definitions
 1. Mounts the XFS-formatted filesystem hosted on "`/dev/RootVG/nessusVol`" to the "`/opt/nessus_agent`" mountpoint
 
-[^1]: The userData-payload shown is _very_ simplified and not very flexible as a result. Flexibility can be achieved by using "discovery" logic to determing things like the name of LVM2 volume-group and volume-name associated with the `/` filesystem.
+[^1]: The userData-payload shown is _very_ simplified and not very flexible as a result. Flexibility can be achieved by using "discovery" logic to determine things like the name of LVM2 volume-group and volume-name associated with the `/` filesystem.
 [^2]: It is assumed that this formula would be run via a block where the `filename` value causes it to be executed after all prior blocks. For example, something like `filename=99_runwam.sh`. See the [watchmaker documentation](https://watchmaker.readthedocs.io/en/stable/usage.html#linux) for ideas on contents for the block.
 [^3]: Multipart-MIME is recommended as it allows the easy, modular setup of launch-time automation. Different automation-chunks can be logically grouped and, by the use of suitable `filename` values, execution-order can be enforced

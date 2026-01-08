@@ -8,6 +8,8 @@ On Windows, the formula depends on the Salt Windows Package Manager (`winrepo`),
 and a `winrepo` package definition must be present for the Nessus Agent.
 Configuring `winrepo` is not handled by this formula.
 
+Note: The Nessus Agent installation has specific storage-requirements in order for the agent-installation to function properly. Please see the (Linux) guidance in  the [Linux Storage Usage](docs/StorageUsage-Linux.md) document
+
 ## Available States
 
 -   [nessus-agent](#nessus-agent)
